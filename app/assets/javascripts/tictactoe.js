@@ -22,6 +22,7 @@ function player(){
 
 function updateState(clickedSquare){
   // var hello = player();
+  debugger;
   $('clickedSquare').text(player())
 }
 
@@ -30,19 +31,36 @@ function setMessage(msgString){
 }
 
 function checkWinner(){
-  var board = [];
-  for(i=0;i<9;i++){
-    console.log(i)
-    debugger;
-    board[i] = $(`td#id-${i}`).val()
-  }
-  for(var el of winCombo){
-    console.log(el)
-    debugger;
-    if(board[el[0]] === board[el[1]] && board[el[1]]=== board[el[2]] && board[el[1]]==="X" || board[el[1]]==="O"){
-    setMessage(`Player ${board[el[0]]} won!`)
-    return true
-  }
+  var board = ["","","","","","","","",""];
+  var status = false ;
+  for(var i=0;i<9;i++){
+    // console.log(i)
+    // debugger;
+    board[i] = $('td').text()[i]
   }
 
+    for(var i=0; i<9; i++){
+    // console.log(el)
+    // debugger;
+    
+    var el = winCombo[i]
+   if(board[el[0]] === board[el[1]] && board[el[1]]=== board[el[2]] && board[el[1]]==="X" || board[el[1]]==="O"){
+  // console.log(`Player ${board[el[0]]} Won!`)
+    setMessage(`Player ${board[el[0]]} Won!`)
+    // debugger;
+    return status = true
+    }
+    } 
+    console.log("s",status)
+    debugger;
+    return status;
+}
+
+function doTurn(clickedSquare){
+  turn ++;
+  updateState(clickedSquare);
+if(checkWinner()){
+  
+}
+  
 }
