@@ -11,7 +11,6 @@ const winCombo = [
   [2,4,6]
   ]
 // function player(){
-  // const player = () =>{
 var player = () =>{
     if(turn % 2===0){
       // console.log('hello')
