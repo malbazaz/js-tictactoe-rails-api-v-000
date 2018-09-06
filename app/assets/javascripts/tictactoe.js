@@ -34,7 +34,7 @@ function checkWinner(){
   for(i=0;i<9;i++){
     console.log(i)
     debugger;
-    board[i] = $(`td#${i}`).val()
+    board[i] = $(`td#id-${i}`).val()
   }
   for(var el of winCombo){
     console.log(el)
