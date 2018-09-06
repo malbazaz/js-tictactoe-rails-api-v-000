@@ -10,6 +10,9 @@ const winCombo = [
   [0,4,8],
   [2,4,6]
   ]
+$(document).ready(function() {
+  attachListeners();
+});
 // function player(){
 var player = () =>{
     if(turn % 2===0){
@@ -35,36 +38,70 @@ function setMessage(msgString){
 }
 
 function checkWinner(){
-  var board = ["","","","","","","","",""];
-  var status = false ;
-  for(var i=0;i<9;i++){
-    // console.log(i)
-    // debugger;
-    board[i] = $('td').text()[i]
-  }
-
-    for(var i=0; i<9; i++){
-    // console.log(el)
-    // debugger;
-
-    var el = winCombo[i]
-   if(board[el[0]] === board[el[1]] && board[el[1]]=== board[el[2]] && board[el[1]]==="X" || board[el[1]]==="O"){
-  // console.log(`Player ${board[el[0]]} Won!`)
-    setMessage(`Player ${board[el[0]]} Won!`)
-    // debugger;
-    return status = true
-    }
-    }
-    console.log("s",status)
-    debugger;
-    return status;
+    var board = {};
+    var status = false ;
+    $('td').text((index,square)=>{ board[index] = square})
+    // for(var i=0;i<9;i++){
+    //   // console.log(i)
+    //   // debugger;
+    //   var td_data = $('td').text()[i]
+    //   if((td_data ==="X")||(td_data === "O")){
+    //     debugger;
+    //         board[i] = td_data
+    //   }else{
+    //         board[i] = ""
+    //   }
+    //
+    // }
+      for(var i=0; i < 8; i++){
+        // console.log(el)
+        // debugger;
+        var el = winCombo[i]
+        // debugger;
+        if(board[el[0]] === board[el[1]] && board[el[1]]=== board[el[2]] && (board[el[1]]==="X" || board[el[1]]==="O")){
+          // console.log(`Player ${board[el[0]]} Won!`)
+          setMessage(`Player ${board[el[0]]} Won!`)
+          // console.log("board1",board)
+          // debugger;
+          return status = true
+        }
+        // console.log(status)
+        // console.log("board2", board)
+        // console.log("i2",board)
+        // debugger;
+      }
+      // console.log("s",status)
+      // debugger;
+      return status;
 }
 
-function doTurn(clickedSquare){
-  turn ++;
-  updateState(clickedSquare);
-if(checkWinner()){
-
+function doTurn(square){
+  // debugger;
+updateState(square);
+turn +=1
+var tie = () =>{
+  if(!checkWinner() && turn===9){
+    setMessage("Tie game.")
+    return true;
+}
 }
 
+if(checkWinner()||tie()){
+  turn = 0;
+  $('td').empty();
+}
+}
+
+function attachListeners(){
+  $('td').on('click', function() {
+     if (!checkWinner()) {
+       doTurn(this);
+     }
+   });
+$('#save').on('click', () => saveGame());
+$('#previous').on('click', () => showPreviousGames());
+$('#clear').on('click', () =>{
+  turn = 0;
+  $('td').empty();
+})
 }
