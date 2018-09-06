@@ -107,9 +107,13 @@ $('#clear').on('click', () =>{
 }
 
 function previousGames(){
-$.get('/games', ()=>{
-  console.log("Working")
-})
+
+  var prevId = parseInt($("#games").attr("game-id")) - 1;
+    $.get("/games", function(data) {
+      var game = data;
+      $('td').text(game["state"]);
+      $("#games").attr("game-id", game["id"]);
+    });
 }
 
 function saveGame(){
@@ -117,7 +121,7 @@ function saveGame(){
   var saving = $.post('/games', values);
   saving.done(function(data) {
         var game = data;
-        $("#games").text(game["id"]);
+        $("#games").attr(game["id"]);
         $('td').text(game["state"]);
       });
 
