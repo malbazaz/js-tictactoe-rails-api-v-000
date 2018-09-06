@@ -99,9 +99,26 @@ function attachListeners(){
      }
    });
 $('#save').on('click', () => saveGame());
-$('#previous').on('click', () => showPreviousGames());
+$('#previous').on('click', () => previousGames());
 $('#clear').on('click', () =>{
   turn = 0;
   $('td').empty();
 })
+}
+
+function previousGames(){
+$.get('/games', ()=>{
+  console.log("Working")
+})
+}
+
+function saveGame(){
+  var values = $(this).serialize();
+  var saving = $.post('/games', values);
+  saving.done(function(data) {
+        var game = data;
+        $("#games").text(game["id"]);
+        $('td').text(game["state"]);
+      });
+
 }
