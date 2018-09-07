@@ -1,5 +1,6 @@
 // Code your JavaScript / jQuery solution here
 var turn = 0;
+var gameId = null;
 const winCombo = [
   [0,1,2],
   [3,4,5],
@@ -78,27 +79,22 @@ function checkWinner(){
 
 function doTurn(square){
   // debugger;
-var status = $(square).text()
-// debugger;
-if (status === ""){
-updateState(square);
-
-turn +=1
-}
-if(checkWinner()){
-  turn = 0;
-  $('td').empty();
-}
-var tie = () =>{
-  if(!checkWinner() && turn===9){
-    setMessage("Tie game.")
-    return true;
-}
-}
-if(tie()){
-  turn = 0;
-  $('td').empty();
-}
+  var status = $(square).text()
+  // debugger;
+  if (status === ""){
+    updateState(square);
+    turn +=1
+  }
+  if(checkWinner()){
+    postSave()
+    turn = 0;
+    $('td').empty();
+  } else if (turn===9){
+      postSave()
+      setMessage("Tie game.")
+      turn = 0;
+      $('td').empty();
+    }
 
 }
 
@@ -123,17 +119,23 @@ function previousGames(){
       var games = data;
       // debugger;
       if(games.data){
+      $("#games").empty();
   games.data.forEach(function(game){
+    // debugger;
+    // if(!($(`#gameid-${game.id}`))){
+    // Check if there is already a GameId
   $('#games').append(`<button id="gameid-${game.id}">${game.id}</button><br>`);
   $(`#gameid-${game.id}`).on('click', () =>{
     $.get(`/games/${game.id}`, function(game){
-    var board = {};
-    $('td').text((index,square)=>{ board[index] = game[index]})
-  })
+    gameId = game.id;
+    $('td').text(()=>{game})
   })
 
+  })
+// }
 });
   }
+
       // $('td').text(game["state"]);
       // $("#games").attr(data);
     });
@@ -141,7 +143,8 @@ function previousGames(){
 }
 
 function saveGame(){
-  debugger;
+
+  // debugger;
   // $("#games").attr(game["id"]);
   // var values = $(this).serialize();
   // var saving = $.post('/games', values);
@@ -151,5 +154,42 @@ function saveGame(){
   //       $("#games").attr(game["id"]);
   //       $('td').attr(game["state"]);
   //     });
+// if previously saved, gameId
+  var values = $(this).serialize();
+  if(gameId){
+    $.ajax({
+        type: 'PATCH',
+        url: `/games/${gameId}`,
+        data: values
+      });
+    turn = 0;
+    $('td').empty();
+  } else {
+    postSave()
+}
+turn = 0;
+$('td').empty();
+}
 
+var postSave = () =>{
+  var values = $(this).serialize();
+  var saving = $.post('/games', values);
+  saving.done(function(data) {
+        var game = data;
+        gameId = game["data"]["id"];
+        // debugger;
+        $("#games").attr(game["data"]["id"]);
+        $('#games').append(`<button id="gameid-${game.data.id}">${game.data.id}</button><br>`);
+      $("#gameid-" + game.data.id).on('click', () =>{
+        $.get(`/games/${game.id}`, function(game){
+        $('td').text(()=>{game})
+        // var board = {};
+        // $('td').text((index)=>{ board[index] = game[index]})
+      })
+        })
+        gameId = null;
+        turn = 0;
+        $('td').empty();
+        // $('td').attr(game["state"]);
+      });
 }
