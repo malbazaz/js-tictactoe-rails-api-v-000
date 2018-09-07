@@ -108,21 +108,38 @@ $('#clear').on('click', () =>{
 
 function previousGames(){
 
-  var prevId = parseInt($("#games").attr("game-id")) - 1;
-    $.get("/games", function(data) {
-      var game = data;
-      $('td').text(game["state"]);
-      $("#games").attr("game-id", game["id"]);
+  $.get("/games", function(data) {
+      // debugger;
+      var games = data;
+      // debugger;
+      if(games.data){
+  games.data.forEach(function(game){
+  $('#games').append(`<button id="gameid-${game.id}">${game.id}</button><br>`);
+  $(`#gameid-${game.id}`).on('click', () =>{
+    $.get(`/games/${game.id}`, function(game){
+    var board = {};
+    $('td').text((index,square)=>{ board[index] = game[index]})
+  })
+  })
+
+});
+  }
+      // $('td').text(game["state"]);
+      // $("#games").attr(data);
     });
+
 }
 
 function saveGame(){
-  var values = $(this).serialize();
-  var saving = $.post('/games', values);
-  saving.done(function(data) {
-        var game = data;
-        $("#games").attr(game["id"]);
-        $('td').text(game["state"]);
-      });
+  debugger;
+  // $("#games").attr(game["id"]);
+  // var values = $(this).serialize();
+  // var saving = $.post('/games', values);
+  // saving.done(function(data) {
+  //       var game = data;
+  //
+  //       $("#games").attr(game["id"]);
+  //       $('td').attr(game["state"]);
+  //     });
 
 }
