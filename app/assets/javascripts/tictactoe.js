@@ -30,7 +30,8 @@ function updateState(clickedSquare){
 //   var hello = player();
 // // debugger;
 // clickedSquare.
-  $(clickedSquare).text(player())
+
+$(clickedSquare).text(player())
 }
 
 function setMessage(msgString){
@@ -77,19 +78,26 @@ function checkWinner(){
 
 function doTurn(square){
   // debugger;
+var status = $(clickedSquare).text()
+if (status !== ""){
 updateState(square);
+}
 turn +=1
+if(checkWinner()){
+  turn = 0;
+  $('td').empty();
+}
 var tie = () =>{
   if(!checkWinner() && turn===9){
     setMessage("Tie game.")
     return true;
 }
 }
-
-if(checkWinner()||tie()){
+if(tie()){
   turn = 0;
   $('td').empty();
 }
+
 }
 
 function attachListeners(){
