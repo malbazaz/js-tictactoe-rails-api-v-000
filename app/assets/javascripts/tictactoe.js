@@ -78,11 +78,13 @@ function checkWinner(){
 
 function doTurn(square){
   // debugger;
-var status = $(clickedSquare).text()
-if (status !== ""){
+var status = $(square).text()
+// debugger;
+if (status === ""){
 updateState(square);
-}
+
 turn +=1
+}
 if(checkWinner()){
   turn = 0;
   $('td').empty();
