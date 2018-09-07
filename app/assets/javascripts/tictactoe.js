@@ -143,8 +143,13 @@ function previousGames(){
 }
 
 function saveGame(){
+<<<<<<< HEAD
 
   // debugger;
+=======
+<<<<<<< HEAD
+  debugger;
+>>>>>>> a34753a69bcb829364bedb9890debc70d6874206
   // $("#games").attr(game["id"]);
   // var values = $(this).serialize();
   // var saving = $.post('/games', values);
@@ -154,6 +159,7 @@ function saveGame(){
   //       $("#games").attr(game["id"]);
   //       $('td').attr(game["state"]);
   //     });
+<<<<<<< HEAD
 // if previously saved, gameId
   var values = $(this).serialize();
   if(gameId){
@@ -170,6 +176,18 @@ function saveGame(){
 turn = 0;
 $('td').empty();
 }
+=======
+=======
+  var values = $(this).serialize();
+  var saving = $.post('/games', values);
+  saving.done(function(data) {
+        var game = data;
+
+        $("#games").attr(game["id"]);
+        $('td').attr(game["state"]);
+      });
+>>>>>>> c41a7998fd863c8f341057b29bddd3d11c7a1c3f
+>>>>>>> a34753a69bcb829364bedb9890debc70d6874206
 
 var postSave = () =>{
   var values = $(this).serialize();
